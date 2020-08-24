@@ -12,7 +12,7 @@ namespace ImGuiNET
         public uint SourceId;
         public uint SourceParentId;
         public int DataFrameCount;
-        public fixed byte DataType[33];
+        public byte DataType;
         public byte Preview;
         public byte Delivery;
     }
@@ -29,16 +29,16 @@ namespace ImGuiNET
         public ref uint SourceId => ref Unsafe.AsRef<uint>(&NativePtr->SourceId);
         public ref uint SourceParentId => ref Unsafe.AsRef<uint>(&NativePtr->SourceParentId);
         public ref int DataFrameCount => ref Unsafe.AsRef<int>(&NativePtr->DataFrameCount);
-        public RangeAccessor<byte> DataType => new RangeAccessor<byte>(NativePtr->DataType, 33);
+        public ref byte DataType => ref Unsafe.AsRef<byte>(&NativePtr->DataType);
         public ref bool Preview => ref Unsafe.AsRef<bool>(&NativePtr->Preview);
         public ref bool Delivery => ref Unsafe.AsRef<bool>(&NativePtr->Delivery);
         public void Clear()
         {
-            ImGuiNative.ImGuiPayload_Clear(NativePtr);
+            ImGuiNative.ImGuiPayload_Clear((ImGuiPayload*)(NativePtr));
         }
         public void Destroy()
         {
-            ImGuiNative.ImGuiPayload_destroy(NativePtr);
+            ImGuiNative.ImGuiPayload_destroy((ImGuiPayload*)(NativePtr));
         }
         public bool IsDataType(string type)
         {
@@ -60,7 +60,7 @@ namespace ImGuiNET
                 native_type[native_type_offset] = 0;
             }
             else { native_type = null; }
-            byte ret = ImGuiNative.ImGuiPayload_IsDataType(NativePtr, native_type);
+            byte ret = ImGuiNative.ImGuiPayload_IsDataType((ImGuiPayload*)(NativePtr), native_type);
             if (type_byteCount > Util.StackAllocationSizeLimit)
             {
                 Util.Free(native_type);
@@ -69,12 +69,12 @@ namespace ImGuiNET
         }
         public bool IsDelivery()
         {
-            byte ret = ImGuiNative.ImGuiPayload_IsDelivery(NativePtr);
+            byte ret = ImGuiNative.ImGuiPayload_IsDelivery((ImGuiPayload*)(NativePtr));
             return ret != 0;
         }
         public bool IsPreview()
         {
-            byte ret = ImGuiNative.ImGuiPayload_IsPreview(NativePtr);
+            byte ret = ImGuiNative.ImGuiPayload_IsPreview((ImGuiPayload*)(NativePtr));
             return ret != 0;
         }
     }
